@@ -1,16 +1,14 @@
-// import logo from './logo.svg';
-import './App.css';
 import React, { useState, useEffect } from 'react';
 
 function App() {
-  const [pokemonData, setPokemonData] = useState(null);
+  const [pokemonList, setPokemonList] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await fetch('/.netlify/functions/hello');
         const data = await response.json();
-        setPokemonData(data);
+        setPokemonList(data.results);
       } catch (error) {
         console.error('Error fetching Pokemon data:', error);
       }
@@ -24,12 +22,12 @@ function App() {
       <p>test</p>
 
       <div>
-        {pokemonData ? (
-          <div>
-            <h2>{pokemonData.name}</h2>
-            <p>URL: {pokemonData.url}</p>
-            {/* Add more details as needed */}
-          </div>
+        {pokemonList.length > 0 ? (
+          <ul>
+            {pokemonList.map((pokemon) => (
+              <li key={pokemon.name}>{pokemon.name}</li>
+            ))}
+          </ul>
         ) : (
           <p>Loading...</p>
         )}
